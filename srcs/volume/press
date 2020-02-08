@@ -1,0 +1,18 @@
+server {
+	listen 80 ;
+	listen [::]:80 ;
+	
+	root /var/www/html/press;
+	server_name press;
+
+	location /press/ {
+	    index	index.php index.html;
+	    try_files	$uri $uri/ /press/index.php?q=$uri&$args;
+	}	
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+		fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	}
+}
